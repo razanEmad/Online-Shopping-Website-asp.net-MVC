@@ -13,7 +13,6 @@ The project provides a complete online shopping experience with user authenticat
 - Order Management
 - Responsive UI Design
 - Admin Product Management
-- Database Integration with SQL Server
 - Clean and User-Friendly Interface
 
 ---
@@ -58,7 +57,7 @@ Online-Shopping-Website/
 1. Clone the repository
 
 ```bash
-git clone https://github.com/razanEmad/Online-Shopping-Website-asp.net-MVC.git
+git clone https://github.com/razanEmad/Online-Shopping-Website-asp.net-MVC
 ```
 
 2. Open the project in Visual Studio
@@ -84,5 +83,3 @@ appsettings.json
 - Wishlist Feature
 - Email Notifications
 - Dark Mode
-
----
