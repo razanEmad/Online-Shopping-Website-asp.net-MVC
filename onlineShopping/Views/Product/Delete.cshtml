@@ -1,0 +1,25 @@
+﻿@model onlineShopping.Models.Product
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2 class="text-danger">Delete Product</h2>
+            <p class="lead">Are you sure you want to delete this?</p>
+
+            <div class="card rounded-0 mb-4">
+                <div class="card-body">
+                    <img src="@Model.ImageUrl" width="150" class="mb-3" />
+                    <h4>@Model.Name</h4>
+                    <p class="text-muted">Price: $@Model.Price</p>
+                    <p>Category: @Model.Category?.Name</p>
+                </div>
+            </div>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn btn-danger rounded-0 px-4">Confirm Delete</button>
+                <a asp-action="Index" class="btn btn-outline-dark rounded-0 px-4">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model onlineShopping.Models.User
+
+@{
+    ViewData["Title"] = "My Account";
+}
+
+<div class="container my-5 pt-5">
+    <div class="row g-5">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3 border-end">
+            <h2 class="logo mb-4">Account</h2>
+            <div class="list-group list-group-flush small text-uppercase letter-spacing-1">
+                <a href="#orders" class="list-group-item list-group-item-action border-0 ps-0 fw-bold">Order History</a>
+                <a href="#details" class="list-group-item list-group-item-action border-0 ps-0 text-muted">Personal Info</a>
+                <a href="#details" class="list-group-item list-group-item-action border-0 ps-0 text-muted">Addresses</a>
+                <form asp-action="Logout" asp-controller="Account" method="post" class="mt-4">
+                    <button type="submit" class="btn btn-link p-0 text-decoration-none text-danger small text-uppercase fw-bold">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- Welcome Header -->
+            <div class="mb-5">
+                <h4 class="fw-light">Hello, <span class="fw-bold text-uppercase">@Model.FullName</span></h4>
+                <p class="text-muted small">From your account dashboard you can view your recent orders and manage your shipping address.</p>
+            </div>
+
+            <!-- Order History Section -->
+            <div id="orders" class="mb-5">
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <h5 class="text-uppercase small fw-bold mb-0">Recent Orders</h5>
+                </div>
+
+                @if (Model.Orders != null && Model.Orders.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="bg-light small text-uppercase text-muted">
+                                <tr>
+                                    <th class="border-0">Order ID</th>
+                                    <th class="border-0">Date</th>
+                                    <th class="border-0">Status</th>
+                                    <th class="border-0 text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var order in Model.Orders.OrderByDescending(o => o.OrderDate))
+                                {
+                                    <tr>
+                                        <td class="py-3">
+                                            <a asp-controller="Order" asp-action="MyOrders"  class="text-dark text-decoration-none fw-bold">
+                                                #ORD-@order.Id
+                                            </a>
+                                        </td>
+                                     
+                                        
+                                        <td class="small text-muted">@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                        <td>
+                                            <span class="badge rounded-0 fw-normal text-uppercase p-2 @(order.Status == "Delivered" ? "bg-success" : "bg-dark")" style="font-size: 10px;">
+                                                @order.Status
+                                            </span>
+                                        </td>
+                                        <td class="text-end fw-bold small">$@order.TotalAmount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="p-5 text-center bg-light border border-dashed">
+                        <p class="text-muted mb-0">You haven't placed any orders yet.</p>
+                        <a href="/" class="text-dark small text-uppercase border-bottom border-dark text-decoration-none mt-2 d-inline-block">Start Shopping</a>
+                    </div>
+                }
+            </div>
+
+            <!-- Personal Info Section -->
+            <div id="details" class="row g-4">
+                <div class="col-md-6">
+                    <div class="border p-4 h-100">
+                        <h6 class="text-uppercase small fw-bold mb-3 border-bottom pb-2">Account Details</h6>
+                        <p class="mb-1 small"><strong>Name:</strong> @Model.FullName</p>
+                        <p class="mb-1 small"><strong>Email:</strong> @Model.Email</p>
+                        <p class="mb-0 small"><strong>Phone:</strong> @(Model.PhoneNumber ?? "Not provided")</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="border p-4 h-100">
+                        <h6 class="text-uppercase small fw-bold mb-3 border-bottom pb-2">Default Shipping Address</h6>
+                        <p class="small text-muted mb-0">
+                            @(string.IsNullOrEmpty(Model.Address) ? "No address saved." : Model.Address)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .letter-spacing-1 {
+            letter-spacing: 1px;
+        }
+
+        .list-group-item-action:hover {
+            background-color: transparent;
+            color: #000 !important;
+            padding-left: 5px !important;
+            transition: all 0.3s ease;
+        }
+
+        .border-dashed {
+            border-style: dashed !important;
+        }
+
+        .table thead th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
+}

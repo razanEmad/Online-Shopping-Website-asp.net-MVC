@@ -1,0 +1,111 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model onlineShopping.Models.User
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="container my-5 py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h2 class="logo display-6">Create Account</h2>
+                <p class="text-muted small text-uppercase letter-spacing-1">Join the Buver Community</p>
+            </div>
+
+            <form asp-action="Register" method="post" id="registerForm" novalidate>
+                @Html.AntiForgeryToken()
+
+                <!-- Full Name -->
+                <div class="form-floating mb-3">
+                    <input asp-for="FullName" id="regName" class="form-control rounded-0 border-top-0 border-start-0 border-end-0 shadow-none" placeholder="Full Name" required />
+                    <label asp-for="FullName" class="text-muted small text-uppercase">Full Name</label>
+                    <div class="invalid-feedback">Please enter your full name.</div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" id="regEmail" type="email" class="form-control rounded-0 border-top-0 border-start-0 border-end-0 shadow-none" placeholder="Email" required />
+                    <label asp-for="Email" class="text-muted small text-uppercase">Email Address</label>
+                    <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" id="regPassword" type="password" class="form-control rounded-0 border-top-0 border-start-0 border-end-0 shadow-none" placeholder="Password" required minlength="6" />
+                    <label asp-for="Password" class="text-muted small text-uppercase">Password</label>
+                    <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="PhoneNumber" id="regPhone"
+                           class="form-control rounded-0 border-top-0 border-start-0 border-end-0 shadow-none"
+                           placeholder="Phone Number"
+                           required />
+                    <label asp-for="PhoneNumber" class="text-muted small text-uppercase">
+                        Phone Number
+                    </label>
+                    <div class="invalid-feedback">Phone number is required.</div>
+                </div>
+                <!-- Address -->
+                <div class="form-floating mb-3">
+                    <input asp-for="Address" class="form-control rounded-0 border-top-0 border-start-0 border-end-0 shadow-none" placeholder="Address" required />
+                    <label asp-for="Address" class="text-muted small text-uppercase">Shipping Address</label>
+                    <div class="invalid-feedback">Shipping address is required.</div>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 rounded-0 py-3 mt-2 letter-spacing-2">
+                    CREATE ACCOUNT
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } *@
+
+    <script>
+        (function () {
+            'use strict'
+            const form = document.getElementById('registerForm');
+
+            form.addEventListener('submit', function (event) {
+                const password = document.getElementById('regPassword').value;
+                const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+
+                let isValid = true;
+
+                // Custom Password Length Check
+                if (password.length < 6) {
+                    isValid = false;
+                }
+
+                // Custom Email Check
+                if (!email.includes('@@')) {
+                    isValid = false;
+                }
+
+                // Phone check (must not be empty)
+                if (phone.trim() === '') {
+                    isValid = false;
+                }
+
+                if (!form.checkValidity() || !isValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        })()
+    </script>
+}

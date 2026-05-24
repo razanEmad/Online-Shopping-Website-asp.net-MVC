@@ -1,0 +1,74 @@
+﻿@model IEnumerable<onlineShopping.Models.Product>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container-fluid p-0 position-relative">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2070" class="hero-img" alt="Hero">
+        <div class="hero-text">
+            <span class="sub-title">GLO DITANANVIDIAS</span>
+            <h1>Daily Winds <br> For Colors</h1>
+            <p>Out your filter closet table. Andspellily as ignitfel, <br> where your pesiping tips.</p>
+            <a asp-controller="Product" asp-action="Shop" class="btn btn-dark btn-lg px-5">SHOP NOW</a>
+        </div>
+    </div>
+</section>
+
+<!-- Product Section -->
+<section class="container my-5">
+    <div class="text-center mb-5 mt-5">
+        <h2 class="section-title">Sox off to idenes</h2>
+        <p class="text-muted mx-auto" style="max-width: 600px;">
+            The summer collection is here. Discover our latest ready-to-wear pieces designed for the modern individual.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        @if (Model != null)
+{
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-md-3">
+                <div class="product-card">
+                    <div class="product-image-wrapper">
+                        <img src="@item.ImageUrl" class="img-fluid" alt="@item.Name">
+                            <form asp-controller="Cart" asp-action="Add" method="post">
+                                <input type="hidden" name="productId" value="@item.Id" />
+
+                                <button type="submit" class="add-to-cart-btn">
+                                    ADD TO CART
+                                </button>
+                            </form>
+                        @if (item.StockQuantity < 5)
+                        {
+                            <span class="badge-tag sale">SALE</span>
+                        }
+                    </div>
+                    <div class="product-info mt-3 text-center">
+                        <h5 class="product-name">@item.Name</h5>
+                        <p class="product-category text-muted mb-1">@item.Category.Name</p>
+                        <p class="product-price">$@item.Price</p>
+                    </div>
+                </div>
+            </div>
+        }
+        }
+    </div>
+</section>
+
+<!-- Marketing Section -->
+<section class="marketing-banner my-5 py-5 bg-light">
+    <div class="container d-flex justify-content-around align-items-center flex-wrap">
+        <h2 class="display-4 fw-bold">FEEL AUTHENTIC</h2>
+        <span class="fs-1 text-outline">★</span>
+        <h2 class="display-4 fw-light italic">FEEL TRENDY</h2>
+    </div>
+</section>
+
+<style>
+    .add-to-cart-btn {
+        border: none;
+        background: black;
+        color: white;
+        padding: 10px 20px;
+    }
+</style>

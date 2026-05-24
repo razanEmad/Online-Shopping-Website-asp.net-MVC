@@ -1,0 +1,148 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<onlineShopping.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Shopping Bag";
+    decimal totalAmount = Model?.Sum(i => i.Quantity * i.Product.Price) ?? 0;
+}
+
+<div class="container my-5 pt-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="logo display-4">Your Bag</h1>
+        <p class="text-muted small text-uppercase letter-spacing-2">Items you've selected for purchase</p>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-5">
+            <!-- Cart Items List -->
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr class="text-uppercase small fw-bold text-muted border-bottom">
+                                <th style="width: 50%;">Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-0">
+                            @foreach (var item in Model)
+                            {
+                                <tr class="border-bottom">
+                                    <td class="py-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="cart-img-container me-4 bg-light">
+                                                <img src="@item.Product.ImageUrl" alt="@item.Product.Name" style="width: 100px; height: 130px; object-fit: cover;">
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold text-uppercase small">@item.Product.Name</h6>
+                                                <p class="text-muted small mb-0">Category: @(item.Product.Category?.Name ?? "General")</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-muted small">$@item.Product.Price</td>
+                                    <td>
+                                        <div class="d-flex align-items-center border w-50 justify-content-between px-2 py-1">
+                                            <span class="small">@item.Quantity</span>
+                                        </div>
+                                    </td>
+                                    <td class="fw-bold small">$@(item.Quantity* item.Product.Price)</td>
+                                    <td class="text-end">
+                                        <form asp-action="Remove" asp-route-id="@item.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-link text-dark p-0">
+                                                <i class="fa-solid fa-xmark small"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4">
+                    <a href="/" class="text-dark small text-decoration-none border-bottom border-dark">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <!-- Order Summary Sidebar -->
+            <div class="col-lg-4">
+                <div class="bg-light p-4 sticky-top" style="top: 100px;">
+                    <h5 class="logo mb-4 text-center">Summary</h5>
+
+                    <div class="d-flex justify-content-between mb-3 small text-uppercase">
+                        <span>Subtotal</span>
+                        <span>$@totalAmount</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-3 small text-uppercase">
+                        <span>Shipping</span>
+                        <span class="text-success">Free</span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="fw-bold text-uppercase">Total</span>
+                        <span class="fw-bold h5 mb-0">$@totalAmount</span>
+                    </div>
+
+                    <a asp-controller="Order" asp-action="Checkout" class="btn btn-dark w-100 rounded-0 py-3 mb-3 letter-spacing-2">
+                        PROCEED TO CHECKOUT
+                    </a>
+
+                    <div class="text-center">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="60" class="mx-2 opacity-50" alt="PayPal">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" width="40" class="mx-2 opacity-50" alt="Visa">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" width="40" class="mx-2 opacity-50" alt="MasterCard">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Empty Cart State -->
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fa-solid fa-bag-shopping fa-3x text-light"></i>
+            </div>
+            <h3 class="logo mb-3">Your bag is empty</h3>
+            <p class="text-muted mb-4">Look like you haven't added anything to your bag yet.</p>
+            <a href="/" class="btn btn-dark rounded-0 px-5 py-3 letter-spacing-2">SHOP NEW ARRIVALS</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <style>
+        .cart-img-container {
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .letter-spacing-2 {
+            letter-spacing: 2px;
+        }
+
+        .table thead th {
+            border-top: none;
+            letter-spacing: 1px;
+        }
+
+        /* Sticky sidebar adjustments */
+        .sticky-top {
+            z-index: 10;
+        }
+    </style>
+}

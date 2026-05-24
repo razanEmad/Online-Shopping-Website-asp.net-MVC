@@ -1,0 +1,135 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<onlineShopping.Models.Product>
+
+<div class="container my-5 pt-4">
+    <!-- Header/Filter Section -->
+    <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+            <h1 class="logo display-5 mb-0">Shop All</h1>
+            <p class="text-muted small text-uppercase letter-spacing-2">Discover our latest collection</p>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-link text-dark text-decoration-none dropdown-toggle small text-uppercase" type="button" data-bs-toggle="dropdown">
+                Sort By
+            </button>
+            <ul class="dropdown-menu rounded-0 border-dark">
+                <li><a class="dropdown-item small sort-btn" data-sort="low">Price: Low to High</a></li>
+                <li><a class="dropdown-item small sort-btn" data-sort="high">Price: High to Low</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="mb-4 d-flex gap-2 flex-wrap">
+        <button class="btn btn-dark btn-sm filter-btn" data-filter="All">All</button>
+        <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="Men Clothing">Men</button>
+        <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="Women Clothing">Women</button>
+        <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="Kids Clothing">Kids</button>
+        <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="Shoes">Shoes</button>
+        <button class="btn btn-outline-dark btn-sm filter-btn" data-filter="Accessories">Accessories</button>
+    </div>
+
+    <div class="row g-4" id="productGrid">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-md-4 col-lg-3 product-item" data-category="@(item.Category?.Name)" data-price="@item.Price"
+                 data-id="@item.Id">
+                
+                <div class="product-card position-relative overflow-hidden">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark">
+                        <!-- Image Container -->
+                        <div class="bg-light mb-3" style="aspect-ratio: 3/4; overflow:hidden;">
+                            <img src="@item.ImageUrl" class="img-fluid w-100 h-100" style="object-fit: cover;" alt="@item.Name">
+                        </div>
+                        <!-- Details -->
+                        <div class="product-info text-center">
+                            <h6 class="text-uppercase small fw-bold mb-1">@item.Name</h6>
+                            <p class="text-muted small mb-1">@(item.Category?.Name ?? "Apparel")</p>
+                            <p class="fw-bold mb-0">$@item.Price</p>
+                        </div>
+                    </a>
+
+                    <!-- Quick Add (Visible on Hover via CSS) -->
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="quick-add">
+                        <input type="hidden" name="productId" value="@item.Id" />
+                        <button type="submit" class="btn btn-dark w-100 rounded-0 py-2 small">
+                            QUICK ADD +
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .product-card .quick-add {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 100%;
+        transition: 0.3s ease;
+    }
+
+    .product-card:hover .quick-add {
+        bottom: 80px; /* Moves up into view */
+    }
+
+    .letter-spacing-2 {
+        letter-spacing: 2px;
+    }
+</style>
+
+<script>
+    const buttons = document.querySelectorAll(".filter-btn");
+    const products = document.querySelectorAll(".product-item");
+
+    buttons.forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            const filter = this.dataset.filter;
+
+            products.forEach(product => {
+                const category = product.dataset.category;
+
+                if (filter === "All" || category === filter) {
+                    product.style.display = "block";
+                } else {
+                    product.style.display = "none";
+                }
+            });
+
+        });
+    });
+
+   
+    const sortButtons = document.querySelectorAll(".sort-btn");
+    const grid = document.getElementById("productGrid");
+
+    sortButtons.forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const type = this.dataset.sort;
+            let items = Array.from(document.querySelectorAll(".product-item"));
+
+            if (type === "low") {
+                items.sort((a, b) =>
+                    parseFloat(a.dataset.price) - parseFloat(b.dataset.price)
+                );
+            }
+
+            if (type === "high") {
+                items.sort((a, b) =>
+                    parseFloat(b.dataset.price) - parseFloat(a.dataset.price)
+                );
+            }
+
+            // Re-append sorted items
+            items.forEach(item => grid.appendChild(item));
+        });
+    });
+
+</script>

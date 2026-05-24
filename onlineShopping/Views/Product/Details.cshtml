@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model onlineShopping.Models.Product
+
+<div class="container my-5 pt-5">
+    <div class="row g-5">
+        <!-- Left: Image -->
+        <div class="col-md-7">
+            <div class="bg-light">
+                <img src="@Model.ImageUrl" class="img-fluid w-100" alt="@Model.Name">
+            </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="col-md-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb small text-uppercase mb-4">
+                    <li class="breadcrumb-item"><a href="/" class="text-dark">Home</a></li>
+                    <li class="breadcrumb-item active">@Model.Category.Name</li>
+                </ol>
+            </nav>
+
+            <h1 class="logo display-5 mb-3">@Model.Name</h1>
+            <p class="h4 fw-light mb-4 text-muted">$@Model.Price</p>
+
+            <div class="mb-5">
+                <p class="text-secondary" style="line-height: 1.8;">
+                    @Model.Description
+                </p>
+            </div>
+
+            <form asp-controller="Cart" asp-action="Add" method="post">
+                <input type="hidden" name="productId" value="@Model.Id" />
+
+                <div class="mb-4">
+                    <label class="small text-uppercase fw-bold mb-2 d-block">Quantity</label>
+                    <div class="d-flex" style="width: 120px;">
+                        <input type="number" name="quantity" value="1" min="1" max="@Model.StockQuantity"
+                               class="form-control rounded-0 border-dark text-center" />
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 rounded-0 py-3 letter-spacing-2 mb-3">
+                    ADD TO BAG
+                </button>
+            </form>
+
+            <div class="mt-5 border-top pt-4">
+                <div class="accordion accordion-flush" id="productDetails">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed small text-uppercase px-0 fw-bold shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#shipping">
+                                Shipping & Returns
+                            </button>
+                        </h2>
+                        <div id="shipping" class="accordion-collapse collapse">
+                            <div class="accordion-body px-0 small text-muted">
+                                Free standard shipping on all orders over $150. Returns accepted within 30 days.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

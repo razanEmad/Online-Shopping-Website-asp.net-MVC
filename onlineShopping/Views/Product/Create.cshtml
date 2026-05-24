@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model onlineShopping.Models.Product
+<div class="container my-5">
+    <h2 class="logo mb-4">Add Product</h2>
+    <form asp-action="Create" method="post" class="row g-3 shadow-sm p-4 bg-white border">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="col-md-6">
+            <label class="form-label small text-uppercase">Product Name</label>
+            <input asp-for="Name" class="form-control rounded-0" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label small text-uppercase">Category</label>
+            <select asp-for="CategoryId" class="form-select rounded-0" asp-items="ViewBag.CategoryId"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label class="form-label small text-uppercase">Description</label>
+            <textarea asp-for="Description" class="form-control rounded-0" rows="3"></textarea>
+            
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small text-uppercase">Price</label>
+            <input asp-for="Price" type="number" step="0.01" class="form-control rounded-0" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small text-uppercase">Stock</label>
+            <input asp-for="StockQuantity" class="form-control rounded-0" />
+            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label small text-uppercase">Image URL</label>
+            <input asp-for="ImageUrl" class="form-control rounded-0" />
+        </div>
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-dark rounded-0 px-5">SAVE PRODUCT</button>
+            <a asp-action="Index" class="btn btn-link text-dark">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,49 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<onlineShopping.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Checkout</h2>
+
+<!-- Cart Summary -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Product.Price</td>
+                <td>@item.Quantity</td>
+                <td>@(item.Quantity* item.Product.Price)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Place Order Form -->
+<form asp-action="PlaceOrder" method="post">
+    <div class="form-group">
+        <label>Shipping Address</label>
+        <input type="text" name="shippingAddress" class="form-control" required />
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-success">
+        Place Order
+    </button>
+</form>
